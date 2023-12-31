@@ -14,7 +14,7 @@ app.use(express.json());
 // parse the data from url encoded data
 //app.use(express.urlencoded({extended:false}));
 
-app.use(taskRoutes);
+app.use("/api/tasks", taskRoutes);
 
 // function logger(req, res, next) {
 //     console.log("Logger");
