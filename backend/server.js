@@ -4,17 +4,23 @@ const connectDB = require("./config/connectDB");
 const taskRoutes = require('./routes/taskRoute');
 //const Task = require("./model/taskModel");
 
-
+const cors = require('cors');
 const app = express();
 
 dotenv.config();
 
+// Middles wares
 app.use(express.json());
-
 // parse the data from url encoded data
 //app.use(express.urlencoded({extended:false}));
 
+app.use(cors({
+    origin: ["http://localhost:3000"]
+}));
+
 app.use("/api/tasks", taskRoutes);
+
+
 
 // function logger(req, res, next) {
 //     console.log("Logger");
