@@ -3,6 +3,8 @@ import { Task } from "./Task"
 import TaskForm from "./TaskForm"
 import { toast } from "react-toastify";
 import axios from "axios";
+import { URL } from "../App";
+
 
 
 const TaskList = () => {
@@ -27,7 +29,7 @@ const TaskList = () => {
 
         try {
             
-            await axios.post("http://localhost:65084/api/tasks", formData);
+            await axios.post(`${URL}/api/tasks`, formData);
             toast.success("Task added sucessfully")
             setFormData({...formData, name : ""});
 
