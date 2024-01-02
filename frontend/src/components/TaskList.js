@@ -41,6 +41,19 @@ const TaskList = () => {
 
     };
 
+    const getTask = async () => {
+
+        try {
+            
+            const tasks= await axios.get(`${URL}/api/taks`);
+            console.log(tasks);
+
+        } catch (error) {
+            toast.error(error.message);
+        }
+
+    }
+
 
   return <>
     <h2>Task Manager</h2>
