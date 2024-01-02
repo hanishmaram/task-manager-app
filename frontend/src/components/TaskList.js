@@ -1,14 +1,17 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Task } from "./Task"
 import TaskForm from "./TaskForm"
 import { toast } from "react-toastify";
 import axios from "axios";
 import { URL } from "../App";
+import loadingImage from '../assets/loader.gif';
 
 
 
 const TaskList = () => {
-
+    const [tasks, setTasks] = useState([]);
+    const [completedTasks, setCompletedTasks] = useState([]);
+    const [isLoading, setIsLoading] = useState(false); 
     const [formData, setFormData] = useState({
         name: "",
         completed: false
@@ -33,26 +36,35 @@ const TaskList = () => {
             toast.success("Task added sucessfully")
             setFormData({...formData, name : ""});
 
+            getTasks();
+
         } catch (error) {
             toast.error(error.message);
         }
-
-        console.log(formData);
 
     };
 
-    const getTask = async () => {
+    const getTasks = async () => {
 
         try {
-            
-            const tasks= await axios.get(`${URL}/api/taks`);
-            console.log(tasks);
+            setIsLoading(true);
+            const { data }= await axios.get(`${URL}/api/tasks`);
+            setTasks(data);
+            setIsLoading(false);
 
         } catch (error) {
+            setIsLoading(false);
             toast.error(error.message);
+            console.log(error);
         }
 
     }
+
+    useEffect(() => {
+
+        getTasks();
+
+    },[]);
 
 
   return <>
@@ -67,7 +79,24 @@ const TaskList = () => {
         </p>
     </div>
     <hr />
-    <Task />
+    {
+        isLoading && (
+             <div className="--flex-center">
+                <img src={loadingImage} alt="loading" />
+             </div>
+        )
+    }
+    {
+        !isLoading && tasks.length === 0 ? (
+            <p className="--py">No task added. Please add a task.</p>
+        ) : (
+            <>
+                {tasks.map((task, index) => {
+                    return <Task key={index} index={index} inputTask={task} />
+                })}
+            </>
+        )
+    }
   </>
 }
 
