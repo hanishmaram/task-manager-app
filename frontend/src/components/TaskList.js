@@ -60,6 +60,20 @@ const TaskList = () => {
 
     }
 
+    const deleteTask = async (id) => {
+
+        try {
+            
+            await axios.delete(`${URL}/api/tasks/${id}`)
+            getTasks();
+
+        } catch (error) {
+            toast.error(error.message);
+            console.log(error);
+        }
+
+    }
+
     useEffect(() => {
 
         getTasks();
@@ -72,7 +86,7 @@ const TaskList = () => {
     <TaskForm name={name} handleInputChange={handleInputChange} createTask={createTask} />
     <div className="--flex-between --pb">
         <p>
-            <b>Total Tasks:</b> 0
+            <b>Total Tasks:</b> {tasks.length}
         </p>
         <p>
             <b>Completed Tasks:</b> 0
@@ -92,7 +106,7 @@ const TaskList = () => {
         ) : (
             <>
                 {tasks.map((task, index) => {
-                    return <Task key={index} index={index} inputTask={task} />
+                    return <Task key={index} index={index} inputTask={task} deleteTask={deleteTask} />
                 })}
             </>
         )
