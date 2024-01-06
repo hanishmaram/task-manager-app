@@ -82,7 +82,23 @@ const TaskList = () => {
         setIsEditing(true);
     }
 
-    const updateTask = async () => {
+    const updateTask = async (e) => {
+        e.preventDefault();
+
+        if(name === "")
+            return toast.error("Input field cannot be empty.");
+
+        try {
+            
+            await axios.put(`${URL}/api/tasks/${taskId}`, formData);
+            toast.success("Task updated sucessfully")
+            setFormData({...formData, name : ""});
+            getTasks();
+
+        } catch (error) {
+            toast.error(error.message)
+            console.log(error)
+        }
 
     }
 
